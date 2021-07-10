@@ -11,6 +11,7 @@
 		0A67AB302698D49C00CCA6EE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A67AB2F2698D49C00CCA6EE /* ContentView.swift */; };
 		0A67AB322698D49E00CCA6EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A67AB312698D49E00CCA6EE /* Assets.xcassets */; };
 		0A67AB352698D49E00CCA6EE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A67AB342698D49E00CCA6EE /* Preview Assets.xcassets */; };
+		0A67AB3D2699F8EE00CCA6EE /* CalculatorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A67AB3C2699F8EE00CCA6EE /* CalculatorModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		0A67AB312698D49E00CCA6EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A67AB342698D49E00CCA6EE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0A67AB362698D49E00CCA6EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A67AB3C2699F8EE00CCA6EE /* CalculatorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 				0A67AB312698D49E00CCA6EE /* Assets.xcassets */,
 				0A67AB362698D49E00CCA6EE /* Info.plist */,
 				0A67AB332698D49E00CCA6EE /* Preview Content */,
+				0A67AB3C2699F8EE00CCA6EE /* CalculatorModel.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A67AB3D2699F8EE00CCA6EE /* CalculatorModel.swift in Sources */,
 				0A67AB302698D49C00CCA6EE /* ContentView.swift in Sources */,
 				0A67AB2E2698D49C00CCA6EE /* CalculatorApp.swift in Sources */,
 			);

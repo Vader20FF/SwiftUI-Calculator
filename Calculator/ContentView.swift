@@ -53,34 +53,86 @@ struct ContentView: View {
                         
                         HStack (spacing: screenWidth * 0.02) {
                             ButtonView(buttonText: "AC", foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
+                                .onTapGesture {
+                                    a = ""
+                                    customOperator = ""
+                                    b = ""
+                                    equalitySign = ""
+                                    result = ""
+                                }
                                     
                             ButtonView(buttonText: "+/-", foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
+                                .onTapGesture {
+                                    customOperator = "+/-"
+                                    b = ""
+                                }
                             ButtonView(buttonText: "%", foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
+                                .onTapGesture {
+                                    customOperator = "%"
+                                    b = ""
+                                }
                             ButtonView(buttonText: "/", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
+                                .onTapGesture {
+                                    customOperator = "/"
+                                }
                         }
                         HStack (spacing: screenWidth * 0.02) {
                             ButtonView(buttonText: "7", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                             ButtonView(buttonText: "8", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                             ButtonView(buttonText: "9", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                             ButtonView(buttonText: "x", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
+                                .onTapGesture {
+                                    customOperator = "x"
+                                }
                         }
                         HStack (spacing: screenWidth * 0.02) {
                             ButtonView(buttonText: "4", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                             ButtonView(buttonText: "5", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                             ButtonView(buttonText: "6", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                             ButtonView(buttonText: "-", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
+                                .onTapGesture {
+                                    customOperator = "-"
+                                }
                         }
                         HStack (spacing: screenWidth * 0.02) {
                             ButtonView(buttonText: "1", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                             ButtonView(buttonText: "2", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                             ButtonView(buttonText: "3", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                             ButtonView(buttonText: "+", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
+                                .onTapGesture {
+                                    customOperator = "+"
+                                }
                         }
                         HStack (spacing: screenWidth * 0.02) {
                             Spacer(minLength: screenWidth * 0.240)
                             ButtonView(buttonText: "0", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                             ButtonView(buttonText: ",", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                                .onTapGesture {
+//                                    a = ""
+//                                    customOperator = ""
+//                                    b = ""
+//                                    equalitySign = ""
+//                                    result = ""
+                                }
                             ButtonView(buttonText: "=", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
+                                .onTapGesture {
+                                    switch customOperator {
+                                    case "/":
+                                        result = String(Double(a)! / Double(b)!)
+                                    case "x":
+                                        result = String(Double(a)! * Double(b)!)
+                                    case "-":
+                                        result = String(Double(a)! - Double(b)!)
+                                    case "+":
+                                        result = String(Double(a)! + Double(b)!)
+                                    case "%":
+                                        result = String(Double(a)! / 100)
+                                    case "+/-":
+                                        result = String(-Double(a)!)
+                                    default:
+                                        result = ""
+                                    }
+                                }
                         }
                     }
                     
@@ -93,7 +145,6 @@ struct ContentView: View {
         
     }
 }
-
 
 
 func addition(a: Double, b: Double) -> Double {
