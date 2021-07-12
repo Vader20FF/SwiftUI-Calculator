@@ -142,6 +142,9 @@ struct CalculationView: View {
             .font(.system(size: screenWidth * 0.15))
             .foregroundColor(.white)
             .lineLimit(1)
+            .onAppear() {
+                
+            }
         }
     }
     
@@ -283,7 +286,7 @@ struct ButtonView: View {
     private var foregroundButtonColor: Color
     private var textButtonColor: Color
     
-    @State private var isActive = false
+    private var isActive = false
     
     init(buttonText: String, foregroundButtonColor: Color, textButtonColor: Color) {
         self.text = buttonText
@@ -301,11 +304,10 @@ struct ButtonView: View {
         }
         .onTapGesture {
             if Int(text) != nil {
-                CalculationView().assignFunctionToSimpleNumericButton(number: self.text)
+                CalculationView().assignFunctionToSimpleNumericButton(number: text)
             } else {
-                CalculationView().assignFunctionToCustomOperator(operatorSign: self.text)
+                CalculationView().assignFunctionToCustomOperator(operatorSign: text)
             }
-            
         }
 //        .offset(x: 0, y: isActive ? 10 : 0)
 //        .animation(.easeOut(duration: 0.2))
