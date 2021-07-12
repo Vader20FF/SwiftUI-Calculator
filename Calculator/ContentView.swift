@@ -8,54 +8,16 @@
 import SwiftUI
 
 
+let additionSign = "+"
+let subtractionSign = "-"
+let multiplicationSign = "×"
+let divisionSign = "÷"
+let clearSign = "AC"
+let oppositeSign = "+/-"
+let percentSign = "%"
+
+
 struct ContentView: View {
-    @State var a = ""
-    @State var customOperator = ""
-    @State var b = ""
-    @State var equalitySign = "="
-    @State var result = "0"
-    
-    
-    private enum RoundingPrecision {
-        case one
-        case two
-        case three
-        case four
-        case five
-        case six
-        case seven
-        case eight
-        case nine
-    }
-    
-    
-    private func preciseRound(
-        _ value: Double,
-        precision: RoundingPrecision = .one) -> Double
-    {
-        switch precision {
-        case .one:
-            return round(value)
-        case .two:
-            return round(value * 10) / 10.0
-        case .three:
-            return round(value * 100) / 100.0
-        case .four:
-            return round(value * 1000) / 1000.0
-        case .five:
-            return round(value * 10000) / 10000.0
-        case .six:
-            return round(value * 100000) / 100000.0
-        case .seven:
-            return round(value * 1000000) / 1000000.0
-        case .eight:
-            return round(value * 10000000) / 10000000.0
-        case .nine:
-            return round(value * 100000000) / 100000000.0
-        }
-    }
-    
-    
     var body: some View {
         GeometryReader { geometry in
             let screenWidth = geometry.size.width
@@ -65,26 +27,9 @@ struct ContentView: View {
                 Color.black.ignoresSafeArea()
                 
                 VStack {
+                    CalculationView()
                     
-                    VStack (spacing: screenHeight * 0.04) {
-                        Text(a)
-                            .frame(width: screenWidth * 0.85, height: screenHeight * 0.05, alignment: .trailing)
-                        Text(customOperator)
-                            .frame(width: screenWidth * 0.7, height: screenHeight * 0.05, alignment: .trailing)
-                            .foregroundColor(.red)
-                        Text(b)
-                            .frame(width: screenWidth * 0.85, height: screenHeight * 0.05, alignment: .trailing)
-                        Text(equalitySign)
-                            .frame(width: screenWidth * 0.7, height: screenHeight * 0.05, alignment: .trailing)
-                            .foregroundColor(.red)
-                        Text(result)
-                            .frame(width: screenWidth * 0.85, height: screenHeight * 0.05, alignment: .trailing)
-                    }
-                    .font(.system(size: screenWidth * 0.15))
-                    .foregroundColor(.white)
-                    .lineLimit(1)
-                    
-                    VStack (spacing: screenHeight * 0.02) {
+                    VStack {
                         let specialButtonsColor = Color("SpecialButtonsColor")
                         let arithmeticButtonsColor = Color("ArithmeticButtonsColor")
                         let numericButtonsColor = Color("NumericButtonsColor")
@@ -92,203 +37,243 @@ struct ContentView: View {
                         let arithmeticButtonsTextColor = Color(.white)
                         let numericButtonsTextColor = Color(.white)
                         
-                        HStack (spacing: screenWidth * 0.02) {
-                            ButtonView(buttonText: "AC", foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
-                                .onTapGesture {
-                                    a = ""
-                                    customOperator = ""
-                                    b = ""
-                                    equalitySign = "="
-                                    result = "0"
-                                }
+                        HStack (spacing: -screenHeight * 0.03) {
+                            ButtonView(buttonText: clearSign, foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
                                     
-                            ButtonView(buttonText: "+/-", foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
-                                .onTapGesture {
-                                    if !a.isEmpty {
-                                        customOperator = "+/-"
-                                        b = ""
-                                    }
-                                }
-                            ButtonView(buttonText: "%", foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
-                                .onTapGesture {
-                                    if !a.isEmpty {
-                                        customOperator = "%"
-                                        b = ""
-                                    }
-                                }
-                            ButtonView(buttonText: "/", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
-                                .onTapGesture {
-                                    if !a.isEmpty {
-                                        customOperator = "/"
-                                    }
-                                }
+                            ButtonView(buttonText: oppositeSign, foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
+                            
+                            ButtonView(buttonText: percentSign, foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
+                            
+                            ButtonView(buttonText: divisionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
                         }
-                        HStack (spacing: screenWidth * 0.02) {
+                        
+                        HStack (spacing: -screenHeight * 0.03) {
                             ButtonView(buttonText: "7", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                                .onTapGesture {
-                                    if customOperator.isEmpty {
-                                        a += "7"
-                                    } else if !customOperator.isEmpty {
-                                        b += "7"
-                                    }
-                                }
+
                             ButtonView(buttonText: "8", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                                .onTapGesture {
-                                    if customOperator.isEmpty {
-                                        a += "8"
-                                    } else if !customOperator.isEmpty {
-                                        b += "8"
-                                    }
-                                }
+
                             ButtonView(buttonText: "9", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                                .onTapGesture {
-                                    if customOperator.isEmpty {
-                                        a += "9"
-                                    } else if !customOperator.isEmpty {
-                                        b += "9"
-                                    }
-                                }
-                            ButtonView(buttonText: "x", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
-                                .onTapGesture {
-                                    if !a.isEmpty {
-                                        customOperator = "x"
-                                    }
-                                }
+
+                            ButtonView(buttonText: multiplicationSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
                         }
-                        HStack (spacing: screenWidth * 0.02) {
+                        
+                        HStack (spacing: -screenHeight * 0.03) {
                             ButtonView(buttonText: "4", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                                .onTapGesture {
-                                    if customOperator.isEmpty {
-                                        a += "4"
-                                    } else if !customOperator.isEmpty {
-                                        b += "4"
-                                    }
-                                }
+
                             ButtonView(buttonText: "5", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                                .onTapGesture {
-                                    if customOperator.isEmpty {
-                                        a += "5"
-                                    } else if !customOperator.isEmpty {
-                                        b += "5"
-                                    }
-                                }
+
                             ButtonView(buttonText: "6", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                                .onTapGesture {
-                                    if customOperator.isEmpty {
-                                        a += "6"
-                                    } else if !customOperator.isEmpty {
-                                        b += "6"
-                                    }
-                                }
-                            ButtonView(buttonText: "-", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
-                                .onTapGesture {
-                                    if !a.isEmpty {
-                                        customOperator = "-"
-                                    } else {
-                                        a = String(-Double(a)!)
-                                    }
-                                }
+
+                            ButtonView(buttonText: subtractionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
                         }
-                        HStack (spacing: screenWidth * 0.02) {
+                        
+                        HStack (spacing: -screenHeight * 0.03) {
                             ButtonView(buttonText: "1", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                                .onTapGesture {
-                                    if customOperator.isEmpty {
-                                        a += "1"
-                                    } else if !customOperator.isEmpty {
-                                        b += "1"
-                                    }
-                                }
+
                             ButtonView(buttonText: "2", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                                .onTapGesture {
-                                    if customOperator.isEmpty {
-                                        a += "2"
-                                    } else if !customOperator.isEmpty {
-                                        b += "2"
-                                    }
-                                }
+
                             ButtonView(buttonText: "3", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                                .onTapGesture {
-                                    if customOperator.isEmpty {
-                                        a += "3"
-                                    } else if !customOperator.isEmpty {
-                                        b += "3"
-                                    }
-                                }
-                            ButtonView(buttonText: "+", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
-                                .onTapGesture {
-                                    if Double(a)! >= 0 {
-                                        customOperator = "+"
-                                    } else {
-                                        a = String(-Double(a)!)
-                                    }
-                                }
+
+                            ButtonView(buttonText: additionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
                         }
-                        HStack (spacing: screenWidth * 0.02) {
-                            Spacer(minLength: screenWidth * 0.240)
+                        
+                        HStack (spacing: -screenHeight * 0.03) {
+                            Spacer(minLength: screenWidth * 0.295)
                             ButtonView(buttonText: "0", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                                .onTapGesture {
-                                    if a.isEmpty {
-                                        a = "0"
-                                    } else {
-                                        b = "0"
-                                    }
-                                }
+
                             ButtonView(buttonText: ".", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                                .onTapGesture {
-                                    if customOperator.isEmpty && !a.contains(".") {
-                                        a += "."
-                                    } else if !customOperator.isEmpty && !b.contains(".") {
-                                        b += "."
-                                    }
-                                }
+
                             ButtonView(buttonText: "=", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
-                                .onTapGesture {
-                                    switch customOperator {
-                                    case "/":
-                                        if !b.isEmpty {
-                                            result = String(preciseRound(Double(a)! / Double(b)!, precision: .nine))
-                                        }
-                                    case "x":
-                                        if !b.isEmpty {
-                                            result = String(preciseRound(Double(a)! * Double(b)!, precision: .nine))
-                                        }
-                                    case "-":
-                                        if !b.isEmpty {
-                                            result = String(preciseRound(Double(a)! - Double(b)!, precision: .nine))
-                                        }
-                                    case "+":
-                                        if !b.isEmpty {
-                                            result = String(preciseRound(Double(a)! + Double(b)!, precision: .nine))
-                                        }
-                                    case "%":
-                                        if !result.isEmpty {
-                                            result = String(preciseRound(Double(a)! / 100, precision: .nine))
-                                            b = ""
-                                            equalitySign = "="
-                                        }
-                                    case "+/-":
-                                        if !result.isEmpty {
-                                            result = String(-Double(a)!)
-                                            b = ""
-                                            equalitySign = "="
-                                        }
-                                        
-                                    default:
-                                        result = "0"
-                                    }
-                                }
                         }
                     }
-                    
-                            
                 }
                 .padding(.bottom, screenHeight * 0.001)
-        }
+            }
             
             
         
         }
         
+    }
+    
+}
+
+
+struct CalculationView: View {
+    @State var a = ""
+    @State var customOperator = ""
+    @State var b = ""
+    @State var equalitySign = "="
+    @State var result = "0"
+    
+    var body: some View {
+        GeometryReader { geometry in
+            let screenWidth = geometry.size.width
+            let screenHeight = geometry.size.height
+                
+            VStack (spacing: screenHeight * 0.15) {
+                ScrollView(.horizontal) {
+                    Text(a)
+                }
+                .frame(width: screenWidth * 0.85, height: screenHeight * 0.05)
+                .padding(.top, screenHeight * 0.04)
+                    
+                Text(customOperator)
+                .frame(width: screenWidth * 0.7, height: screenHeight * 0.05, alignment: .leading)
+                .foregroundColor(.red)
+                .font(.system(size: 40))
+                    
+                ScrollView(.horizontal) {
+                    Text(b)
+                }
+                .frame(width: screenWidth * 0.85, height: screenHeight * 0.05)
+                    
+                Text(equalitySign)
+                    .frame(width: screenWidth * 0.7, height: screenHeight * 0.05, alignment: .leading)
+                    .foregroundColor(.red)
+                    .font(.system(size: 40))
+                    
+                ScrollView(.horizontal) {
+                    Text(result)
+                }
+                .frame(width: screenWidth * 0.85, height: screenHeight * 0.05)
+                .padding(.bottom, screenHeight * 0.05)
+            }
+            .font(.system(size: screenWidth * 0.15))
+            .foregroundColor(.white)
+            .lineLimit(1)
+        }
+    }
+    
+    
+    public func assignFunctionToSimpleNumericButton(number: String) -> Void {
+        if number == "0" {
+            if !a.isEmpty && customOperator.isEmpty {
+                a += "\(number)"
+            } else if !b.isEmpty && !customOperator.isEmpty {
+                b += "\(number)"
+            }
+        } else {
+            if customOperator.isEmpty {
+                    a += "\(number)"
+            } else if !customOperator.isEmpty {
+                    b += "\(number)"
+            }
+        }
+    }
+    
+     public func assignFunctionToCustomOperator(operatorSign: String) -> Void {
+        switch operatorSign {
+        case divisionSign:
+            if !a.isEmpty {
+                customOperator = divisionSign
+            }
+        case multiplicationSign:
+            if !a.isEmpty {
+                customOperator = multiplicationSign
+            }
+        case additionSign:
+            if a == subtractionSign || a.isEmpty {
+                a = ""
+            } else if !a.isEmpty {
+                customOperator = additionSign
+            }
+            
+            if !customOperator.isEmpty {
+                if b == subtractionSign || b.isEmpty {
+                    b = ""
+                }
+            }
+        case subtractionSign:
+            if a.isEmpty && !a.contains(subtractionSign) {
+                a = subtractionSign
+            } else if !customOperator.isEmpty {
+                if b.isEmpty && !b.contains(subtractionSign) {
+                    b = subtractionSign
+                } else {
+                    customOperator = subtractionSign
+                }
+            } else if !a.isEmpty {
+                customOperator = subtractionSign
+            }
+        case oppositeSign:
+            if !a.isEmpty {
+                customOperator = oppositeSign
+                b = ""
+            }
+        case percentSign:
+            if !a.isEmpty {
+                customOperator = percentSign
+                b = ""
+            }
+        case clearSign:
+            a = ""
+            customOperator = ""
+            b = ""
+            equalitySign = "="
+            result = "0"
+        case ".":
+            if customOperator.isEmpty && !a.contains(".") {
+                a += "."
+            } else if !customOperator.isEmpty && !b.contains(".") {
+                b += "."
+            }
+        case "=":
+            switch customOperator {
+            case divisionSign:
+                if !b.isEmpty {
+                    if !(b == "0") && !(b == "-0") {
+                        result = String(Double(a)! / Double(b)!)
+                        if result.hasSuffix(".0") {
+                            result = String(result.dropLast(2))
+                        }
+                    }
+                }
+            case multiplicationSign:
+                if !b.isEmpty {
+                    result = String(Double(a)! * Double(b)!)
+                    if result.hasSuffix(".0") {
+                        result = String(result.dropLast(2))
+                    }
+                }
+            case subtractionSign:
+                if !b.isEmpty {
+                    result = String(Double(a)! - Double(b)!)
+                    if result.hasSuffix(".0") {
+                        result = String(result.dropLast(2))
+                    }
+                }
+            case additionSign:
+                if !b.isEmpty {
+                    result = String(Double(a)! + Double(b)!)
+                    if result.hasSuffix(".0") {
+                        result = String(result.dropLast(2))
+                    }
+                }
+            case percentSign:
+                if !result.isEmpty {
+                    result = String(Double(a)! / 100)
+                    b = ""
+                    equalitySign = "="
+                    if result.hasSuffix(".0") {
+                        result = String(result.dropLast(2))
+                    }
+                }
+            case oppositeSign:
+                if !result.isEmpty {
+                    result = String(-Double(a)!)
+                    b = ""
+                    equalitySign = "="
+                    if result.hasSuffix(".0") {
+                        result = String(result.dropLast(2))
+                    }
+                }
+            default:
+                result = "0"
+            }
+        default:
+            result = "0"
+        }
     }
 }
 
@@ -297,6 +282,8 @@ struct ButtonView: View {
     private var text: String
     private var foregroundButtonColor: Color
     private var textButtonColor: Color
+    
+    @State private var isActive = false
     
     init(buttonText: String, foregroundButtonColor: Color, textButtonColor: Color) {
         self.text = buttonText
@@ -310,9 +297,26 @@ struct ButtonView: View {
             shape.fill().foregroundColor(foregroundButtonColor)
             Text(text)
                 .font(.largeTitle)
-                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 .foregroundColor(textButtonColor)
         }
+        .onTapGesture {
+            if Int(text) != nil {
+                CalculationView().assignFunctionToSimpleNumericButton(number: self.text)
+            } else {
+                CalculationView().assignFunctionToCustomOperator(operatorSign: self.text)
+            }
+            
+        }
+//        .offset(x: 0, y: isActive ? 10 : 0)
+//        .animation(.easeOut(duration: 0.2))
+//        .gesture(DragGesture(minimumDistance: 0)
+//                    .onChanged({ _ in
+//                        self.isActive = true
+//                    })
+//                    .onEnded({ _ in
+//                        self.isActive = false
+//                    })
+//        )
     }
     
 }
