@@ -18,7 +18,7 @@ let percentSign = "%"
 
 
 struct ContentView: View {
-    let viewModel: CalculatorViewModel
+    @ObservedObject var viewModel: CalculatorViewModel
     
     var body: some View {
         GeometryReader { geometry in
@@ -107,6 +107,7 @@ struct CalculationView: View {
             VStack (spacing: screenHeight * 0.10) {
                 ScrollView(.horizontal) {
                     Text(viewModel.a)
+                        .foregroundColor(.white)
                 }
                 .frame(width: screenWidth * 0.85, height: screenHeight * 0.05)
                 .padding(.top, screenHeight * 0.06)
@@ -118,6 +119,7 @@ struct CalculationView: View {
                 
                 ScrollView(.horizontal) {
                     Text(viewModel.b)
+                        .foregroundColor(.white)
                 }
                 .frame(width: screenWidth * 0.85, height: screenHeight * 0.05)
                 
@@ -128,6 +130,7 @@ struct CalculationView: View {
                 
                 ScrollView(.horizontal) {
                     Text(viewModel.result)
+                        .foregroundColor(.white)
                 }
                 .frame(width: screenWidth * 0.85, height: screenHeight * 0.05)
                 .padding(.bottom, screenHeight * 0.06)
@@ -147,8 +150,6 @@ struct ButtonView: View {
     private var foregroundButtonColor: Color
     private var textButtonColor: Color
     
-    @State private var isActive = false
-    
     init(viewModel: CalculatorViewModel, buttonText: String, foregroundButtonColor: Color, textButtonColor: Color) {
         self.viewModel = viewModel
         self.text = buttonText
@@ -167,16 +168,6 @@ struct ButtonView: View {
         .onTapGesture {
             viewModel.chooseButton(buttonText: self.text)
         }
-                .offset(x: 0, y: isActive ? 10 : 0)
-                .animation(.easeOut(duration: 0.2))
-                .gesture(DragGesture(minimumDistance: 0)
-                            .onChanged({ _ in
-                                isActive = true
-                            })
-                            .onEnded({ _ in
-                                isActive = false
-                            })
-                )
     }
     
 }
