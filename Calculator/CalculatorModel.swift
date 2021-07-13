@@ -54,7 +54,6 @@ struct CalculatorModel {
             } else if !a.isEmpty {
                 customOperator = additionSign
             }
-            
             if !customOperator.isEmpty {
                 if b == subtractionSign || b.isEmpty {
                     b = ""
@@ -74,13 +73,23 @@ struct CalculatorModel {
             }
         case oppositeSign:
             if !a.isEmpty {
-                customOperator = oppositeSign
-                b = ""
+                if customOperator.isEmpty {
+                    a = removeSuffix(data: String(-Double(a)!))
+                } else {
+                    if !b.isEmpty {
+                        b = removeSuffix(data: String(-Double(b)!))
+                    }
+                }
             }
         case percentSign:
             if !a.isEmpty {
-                customOperator = percentSign
-                b = ""
+                if customOperator.isEmpty {
+                    a = removeSuffix(data: String(Double(a)! * 100))
+                } else {
+                    if !b.isEmpty {
+                        b = removeSuffix(data: String(Double(b)! * 100))
+                    }
+                }
             }
         case clearSign:
             a = ""
@@ -88,6 +97,14 @@ struct CalculatorModel {
             b = ""
             equalitySign = "="
             result = "0"
+        case "↑":
+            if !result.isEmpty && result != "0" {
+                a = result
+                customOperator = ""
+                b = ""
+                equalitySign = "="
+                result = "0"
+            }
         case ".":
             if customOperator.isEmpty && !a.contains(".") {
                 a += "."
@@ -99,56 +116,34 @@ struct CalculatorModel {
             case divisionSign:
                 if !b.isEmpty {
                     if !(b == "0") && !(b == "-0") {
-                        result = String(Double(a)! / Double(b)!)
-                        if result.hasSuffix(".0") {
-                            result = String(result.dropLast(2))
-                        }
+                        result = removeSuffix(data: String(Double(a)! / Double(b)!))
                     }
                 }
             case multiplicationSign:
                 if !b.isEmpty {
-                    result = String(Double(a)! * Double(b)!)
-                    if result.hasSuffix(".0") {
-                        result = String(result.dropLast(2))
-                    }
+                    result = removeSuffix(data: String(Double(a)! * Double(b)!))
                 }
             case subtractionSign:
                 if !b.isEmpty {
-                    result = String(Double(a)! - Double(b)!)
-                    if result.hasSuffix(".0") {
-                        result = String(result.dropLast(2))
-                    }
+                    result = removeSuffix(data: String(Double(a)! - Double(b)!))
                 }
             case additionSign:
                 if !b.isEmpty {
-                    result = String(Double(a)! + Double(b)!)
-                    if result.hasSuffix(".0") {
-                        result = String(result.dropLast(2))
-                    }
-                }
-            case percentSign:
-                if !result.isEmpty {
-                    result = String(Double(a)! / 100)
-                    b = ""
-                    equalitySign = "="
-                    if result.hasSuffix(".0") {
-                        result = String(result.dropLast(2))
-                    }
-                }
-            case oppositeSign:
-                if !result.isEmpty {
-                    result = String(-Double(a)!)
-                    b = ""
-                    equalitySign = "="
-                    if result.hasSuffix(".0") {
-                        result = String(result.dropLast(2))
-                    }
+                    result = removeSuffix(data: String(Double(a)! + Double(b)!))
                 }
             default:
                 result = "0"
             }
         default:
             result = "0"
+        }
+    }
+    
+    private func removeSuffix(data: String) -> String {
+        if data.hasSuffix(".0") {
+            return String(data.dropLast(2))
+        } else {
+            return data
         }
     }
 }

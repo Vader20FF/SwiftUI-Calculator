@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 let additionSign = "+"
 let subtractionSign = "-"
 let multiplicationSign = "×"
@@ -22,7 +21,6 @@ struct ContentView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            let screenWidth = geometry.size.width
             let screenHeight = geometry.size.height
             
             ZStack {
@@ -35,6 +33,7 @@ struct ContentView: View {
                         let specialButtonsColor = Color("SpecialButtonsColor")
                         let arithmeticButtonsColor = Color("ArithmeticButtonsColor")
                         let numericButtonsColor = Color("NumericButtonsColor")
+                        let arrowUpButtonColor = Color("ArrowUpButtonColor")
                         let specialButtonsTextColor = Color(.black)
                         let arithmeticButtonsTextColor = Color(.white)
                         let numericButtonsTextColor = Color(.white)
@@ -80,7 +79,8 @@ struct ContentView: View {
                         }
                         
                         HStack (spacing: -screenHeight * 0.03) {
-                            Spacer(minLength: screenWidth * 0.295)
+                            ButtonView(viewModel: viewModel, buttonText: "↑", foregroundButtonColor: arrowUpButtonColor, textButtonColor: numericButtonsTextColor)
+                            
                             ButtonView(viewModel: viewModel, buttonText: "0", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                             
                             ButtonView(viewModel: viewModel, buttonText: ".", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
@@ -108,6 +108,13 @@ struct CalculationView: View {
                 ScrollView(.horizontal) {
                     Text(viewModel.a)
                         .foregroundColor(.white)
+                        .contextMenu {
+                            Button {
+                                viewModel.copyToClipboard(number: viewModel.a)
+                            } label: {
+                                Label("Kopiuj", systemImage: "nil")
+                            }
+                        }
                 }
                 .frame(width: screenWidth * 0.85, height: screenHeight * 0.05)
                 .padding(.top, screenHeight * 0.06)
@@ -120,6 +127,13 @@ struct CalculationView: View {
                 ScrollView(.horizontal) {
                     Text(viewModel.b)
                         .foregroundColor(.white)
+                        .contextMenu {
+                            Button {
+                                viewModel.copyToClipboard(number: viewModel.b)
+                            } label: {
+                                Label("Kopiuj", systemImage: "nil")
+                            }
+                        }
                 }
                 .frame(width: screenWidth * 0.85, height: screenHeight * 0.05)
                 
@@ -131,6 +145,13 @@ struct CalculationView: View {
                 ScrollView(.horizontal) {
                     Text(viewModel.result)
                         .foregroundColor(.white)
+                        .contextMenu {
+                            Button {
+                                viewModel.copyToClipboard(number: viewModel.result)
+                            } label: {
+                                Label("Kopiuj", systemImage: "nil")
+                            }
+                        }
                 }
                 .frame(width: screenWidth * 0.85, height: screenHeight * 0.05)
                 .padding(.bottom, screenHeight * 0.06)

@@ -39,4 +39,8 @@ class CalculatorViewModel: ObservableObject {
     func chooseButton(buttonText: String) {
         model.chooseButton(buttonText: buttonText)
     }
+    
+    func copyToClipboard(number: String) {
+        UIPasteboard.general.string = number
+    }
 }
