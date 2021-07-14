@@ -12,3 +12,5 @@ List of things I have learnt during the work on this app:
 - MVVM (how to divide the whole code into the model, view, model-view parts and have every one of the in sync with each other
 - Difference beetwen struct and class
 - PropertyWrappers such as @Published, @ObservedObject in connection with MVVM
+- Setting up different icon styles and sizes depending on the device
+- Adding different color sets
