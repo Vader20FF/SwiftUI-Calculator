@@ -170,6 +170,7 @@ struct ButtonView: View {
     private var text: String
     private var foregroundButtonColor: Color
     private var textButtonColor: Color
+    @State private var isAnimated = true
     
     init(viewModel: CalculatorViewModel, buttonText: String, foregroundButtonColor: Color, textButtonColor: Color) {
         self.viewModel = viewModel
@@ -179,15 +180,25 @@ struct ButtonView: View {
     }
     
     var body: some View {
+        let shape = Circle()
         ZStack {
-            let shape = Circle()
-            shape.fill().foregroundColor(foregroundButtonColor)
-            Text(text)
-                .font(.largeTitle)
-                .foregroundColor(textButtonColor)
+            if isAnimated {
+                shape.fill().foregroundColor(foregroundButtonColor)
+                Text(text)
+                    .font(.largeTitle)
+                    .foregroundColor(textButtonColor)
+            } else {
+                shape.fill().foregroundColor(foregroundButtonColor)
+                Text(text)
+                    .font(.largeTitle)
+                    .foregroundColor(textButtonColor)
+            }
         }
         .onTapGesture {
             viewModel.chooseButton(buttonText: self.text)
+            withAnimation(.spring()) {
+                isAnimated.toggle()
+            }
         }
     }
     
