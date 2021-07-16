@@ -7,7 +7,21 @@
 
 import SwiftUI
 
+let additionSign = "+"
+let subtractionSign = "-"
+let multiplicationSign = "×"
+let divisionSign = "÷"
+let clearSign = "AC"
+let oppositeSign = "+/-"
+let percentSign = "%"
 
+let specialButtonsColor = Color("SpecialButtonsColor")
+let arithmeticButtonsColor = Color("ArithmeticButtonsColor")
+let numericButtonsColor = Color("NumericButtonsColor")
+let arrowUpButtonColor = Color("ArrowUpButtonColor")
+let specialButtonsTextColor = Color(.black)
+let arithmeticButtonsTextColor = Color(.white)
+let numericButtonsTextColor = Color(.white)
 
 class CalculatorViewModel: ObservableObject {
     @Published private var model: CalculatorModel = createCalculator()

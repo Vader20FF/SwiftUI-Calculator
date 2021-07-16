@@ -7,96 +7,52 @@
 
 import SwiftUI
 
-let additionSign = "+"
-let subtractionSign = "-"
-let multiplicationSign = "×"
-let divisionSign = "÷"
-let clearSign = "AC"
-let oppositeSign = "+/-"
-let percentSign = "%"
-
 
 struct ContentView: View {
     @ObservedObject var viewModel: CalculatorViewModel
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+
     
     var body: some View {
         GeometryReader { geometry in
             let screenHeight = geometry.size.height
             
-            ZStack {
-                Color.black.ignoresSafeArea()
-                
-                VStack {
-                    CalculationView(viewModel: viewModel)
+            if horizontalSizeClass == .compact {
+                ZStack {
+                    Color.black.ignoresSafeArea()
                     
                     VStack {
-                        let specialButtonsColor = Color("SpecialButtonsColor")
-                        let arithmeticButtonsColor = Color("ArithmeticButtonsColor")
-                        let numericButtonsColor = Color("NumericButtonsColor")
-                        let arrowUpButtonColor = Color("ArrowUpButtonColor")
-                        let specialButtonsTextColor = Color(.black)
-                        let arithmeticButtonsTextColor = Color(.white)
-                        let numericButtonsTextColor = Color(.white)
+                        CalculationsFieldView(viewModel: viewModel)
                         
-                        HStack (spacing: -screenHeight * 0.03) {
-                            ButtonView(viewModel: viewModel, buttonText: clearSign, foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: oppositeSign, foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: percentSign, foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: divisionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
-                        }
-                        
-                        HStack (spacing: -screenHeight * 0.03) {
-                            ButtonView(viewModel: viewModel, buttonText: "7", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: "8", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: "9", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: multiplicationSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
-                        }
-                        
-                        HStack (spacing: -screenHeight * 0.03) {
-                            ButtonView(viewModel: viewModel, buttonText: "4", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: "5", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: "6", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: subtractionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
-                        }
-                        
-                        HStack (spacing: -screenHeight * 0.03) {
-                            ButtonView(viewModel: viewModel, buttonText: "1", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: "2", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: "3", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: additionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
-                        }
-                        
-                        HStack (spacing: -screenHeight * 0.03) {
-                            ButtonView(viewModel: viewModel, buttonText: "↑", foregroundButtonColor: arrowUpButtonColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: "0", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: ".", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
-                            
-                            ButtonView(viewModel: viewModel, buttonText: "=", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
+                        VStack {
+                            ButtonsPadView(viewModel: viewModel)
                         }
                     }
+                    .padding(.bottom, screenHeight * 0.001)
                 }
-                .padding(.bottom, screenHeight * 0.001)
+            } else {
+                ZStack {
+                    Color.black.ignoresSafeArea()
+                    
+                    HStack(spacing: screenHeight * 0.0001) {
+                        VStack {
+                            ButtonsPadView(viewModel: viewModel)
+                        }
+                        
+                        CalculationsFieldView(viewModel: viewModel)
+                    }
+                    .padding(.bottom, screenHeight * 0.001)
+                    .padding(.top, screenHeight * 0.1)
+                }
             }
+            
         }
     }
 }
 
 
-struct CalculationView: View {
+struct CalculationsFieldView: View {
     @ObservedObject var viewModel: CalculatorViewModel
     
     var body: some View {
@@ -202,6 +158,73 @@ struct ButtonView: View {
         }
     }
     
+}
+
+
+struct ButtonsPadView: View {
+    let viewModel: CalculatorViewModel
+    
+    init(viewModel: CalculatorViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    var body: some View {
+        GeometryReader { geometry in
+            let screenHeight = geometry.size.height
+            
+            VStack {
+                HStack (spacing: -screenHeight * 0.03) {
+                    ButtonView(viewModel: viewModel, buttonText: clearSign, foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: oppositeSign, foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: percentSign, foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: divisionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
+                }
+                
+                HStack (spacing: -screenHeight * 0.03) {
+                    ButtonView(viewModel: viewModel, buttonText: "7", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: "8", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: "9", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: multiplicationSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
+                }
+                
+                HStack (spacing: -screenHeight * 0.03) {
+                    ButtonView(viewModel: viewModel, buttonText: "4", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: "5", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: "6", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: subtractionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
+                }
+                
+                HStack (spacing: -screenHeight * 0.03) {
+                    ButtonView(viewModel: viewModel, buttonText: "1", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: "2", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: "3", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: additionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
+                }
+                
+                HStack (spacing: -screenHeight * 0.03) {
+                    ButtonView(viewModel: viewModel, buttonText: "↑", foregroundButtonColor: arrowUpButtonColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: "0", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: ".", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
+                    
+                    ButtonView(viewModel: viewModel, buttonText: "=", foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
+                }
+            }
+        }
+    }
 }
 
 
