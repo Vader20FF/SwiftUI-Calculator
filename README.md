@@ -14,3 +14,4 @@ List of things I have learnt during the work on this app:
 - PropertyWrappers such as @Published, @ObservedObject in connection with MVVM
 - Setting up different icon styles and sizes depending on the device
 - Adding different color sets
+- How to setup separate app layouts for both portrait and landscape device orientation modes
