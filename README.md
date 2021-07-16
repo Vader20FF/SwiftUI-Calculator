@@ -15,3 +15,8 @@ List of things I have learnt during the work on this app:
 - Setting up different icon styles and sizes depending on the device
 - Adding different color sets
 - How to setup separate app layouts for both portrait and landscape device orientation modes
+
+
+Preview:
+
+https://user-images.githubusercontent.com/78795431/126012945-4edb5009-57ec-4125-8a9b-e0cb2a31f6d3.mp4
