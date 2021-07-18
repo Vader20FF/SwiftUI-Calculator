@@ -10,6 +10,8 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var viewModel: CalculatorViewModel
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.verticalSizeClass) var verticalSizeClass
     
     var body: some View {
         GeometryReader { geometry in
@@ -18,16 +20,51 @@ struct ContentView: View {
             ZStack {
                 Color.black.ignoresSafeArea()
             
-                VStack {
-                    CalculationsFieldView(viewModel: viewModel)
-                        .frame(width: screenWidth * 0.9, height: screenHeight * 0.43)
-                    
+                if checkDeviceOrientation() == "iphone portrait" {
                     VStack {
+                        CalculationsFieldView(viewModel: viewModel)
+                            .frame(width: screenWidth * 0.9, height: screenHeight * 0.43)
+                        
                         ButtonsPadView(viewModel: viewModel)
-                            .padding(.bottom)
                     }
+                    .padding(.bottom)
+                } else if checkDeviceOrientation() == "small iphone landscape" {
+                    HStack {
+                        ButtonsPadView(viewModel: viewModel)
+                        
+                        CalculationsFieldView(viewModel: viewModel)
+                    }
+                    .padding(.vertical)
+                } else if checkDeviceOrientation() == "large iphone landscape" {
+                    HStack {
+                        ButtonsPadView(viewModel: viewModel)
+                        
+                        CalculationsFieldView(viewModel: viewModel)
+                    }
+                    .padding(.vertical)
+                } else if checkDeviceOrientation() == "ipad" {
+                    HStack {
+                        ButtonsPadView(viewModel: viewModel)
+                                
+                        CalculationsFieldView(viewModel: viewModel)
+                    }
+                    .padding(.vertical)
                 }
             }
+        }
+    }
+    
+    func checkDeviceOrientation() -> String {
+        if horizontalSizeClass == .compact && verticalSizeClass == .regular {
+            return "iphone portrait"
+        } else if horizontalSizeClass == .compact && verticalSizeClass == .compact {
+            return "small iphone landscape"
+        } else if horizontalSizeClass == .regular && verticalSizeClass == .compact {
+            return "large iphone landscape"
+        } else if horizontalSizeClass == .regular && verticalSizeClass == .regular {
+            return "ipad"
+        } else {
+            return "iphone portrait"
         }
     }
 }
@@ -44,6 +81,7 @@ struct CalculationsFieldView: View {
             VStack (spacing: screenHeight * 0.10) {
                 ScrollView(.horizontal) {
                     Text(viewModel.a)
+                        .font(.system(size: screenHeight * 0.2))
                         .foregroundColor(.white)
                         .contextMenu {
                             Button {
@@ -59,10 +97,11 @@ struct CalculationsFieldView: View {
                 Text(viewModel.customOperator)
                     .frame(width: screenWidth * 0.7, height: screenHeight * 0.05, alignment: .leading)
                     .foregroundColor(.red)
-                    .font(.system(size: 40))
+                    .font(.system(size: screenHeight * 0.12))
                 
                 ScrollView(.horizontal) {
                     Text(viewModel.b)
+                        .font(.system(size: screenHeight * 0.2))
                         .foregroundColor(.white)
                         .contextMenu {
                             Button {
@@ -77,10 +116,11 @@ struct CalculationsFieldView: View {
                 Text(viewModel.equalitySign)
                     .frame(width: screenWidth * 0.7, height: screenHeight * 0.05, alignment: .leading)
                     .foregroundColor(.red)
-                    .font(.system(size: 40))
+                    .font(.system(size: screenHeight * 0.12))
                 
                 ScrollView(.horizontal) {
                     Text(viewModel.result)
+                        .font(.system(size: screenHeight * 0.2))
                         .foregroundColor(.white)
                         .contextMenu {
                             Button {
@@ -117,18 +157,18 @@ struct ButtonView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            let screenHeight = geometry.size.height
+            let screenWidth = geometry.size.width
             let shape = Circle()
             ZStack {
                 if isAnimated {
                     shape.fill().foregroundColor(foregroundButtonColor)
                     Text(text)
-                        .font(.system(size: screenHeight * 0.43))
+                        .font(.system(size: screenWidth * 0.43))
                         .foregroundColor(textButtonColor)
                 } else {
                     shape.fill().foregroundColor(foregroundButtonColor)
                     Text(text)
-                        .font(.largeTitle)
+                        .font(.system(size: screenWidth * 0.43))
                         .foregroundColor(textButtonColor)
                 }
             }
@@ -146,6 +186,8 @@ struct ButtonView: View {
 
 struct ButtonsPadView: View {
     let viewModel: CalculatorViewModel
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.verticalSizeClass) var verticalSizeClass
     
     init(viewModel: CalculatorViewModel) {
         self.viewModel = viewModel
@@ -153,10 +195,10 @@ struct ButtonsPadView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            let screenHeight = geometry.size.height
+            let screenWidth = geometry.size.width
             
             VStack {
-                HStack (spacing: -screenHeight * 0.1) {
+                HStack (spacing: screenWidth * 0.01) {
                     ButtonView(viewModel: viewModel, buttonText: clearSign, foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
                     
                     ButtonView(viewModel: viewModel, buttonText: oppositeSign, foregroundButtonColor: specialButtonsColor, textButtonColor: specialButtonsTextColor)
@@ -166,7 +208,7 @@ struct ButtonsPadView: View {
                     ButtonView(viewModel: viewModel, buttonText: divisionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
                 }
                 
-                HStack (spacing: -screenHeight * 0.1) {
+                HStack (spacing: screenWidth * 0.01) {
                     ButtonView(viewModel: viewModel, buttonText: "7", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                     
                     ButtonView(viewModel: viewModel, buttonText: "8", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
@@ -176,7 +218,7 @@ struct ButtonsPadView: View {
                     ButtonView(viewModel: viewModel, buttonText: multiplicationSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
                 }
                 
-                HStack (spacing: -screenHeight * 0.1) {
+                HStack (spacing: screenWidth * 0.01) {
                     ButtonView(viewModel: viewModel, buttonText: "4", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                     
                     ButtonView(viewModel: viewModel, buttonText: "5", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
@@ -186,7 +228,7 @@ struct ButtonsPadView: View {
                     ButtonView(viewModel: viewModel, buttonText: subtractionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
                 }
                 
-                HStack (spacing: -screenHeight * 0.1) {
+                HStack (spacing: screenWidth * 0.01) {
                     ButtonView(viewModel: viewModel, buttonText: "1", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
                     
                     ButtonView(viewModel: viewModel, buttonText: "2", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
@@ -196,7 +238,7 @@ struct ButtonsPadView: View {
                     ButtonView(viewModel: viewModel, buttonText: additionSign, foregroundButtonColor: arithmeticButtonsColor, textButtonColor: arithmeticButtonsTextColor)
                 }
                 
-                HStack (spacing: -screenHeight * 0.1) {
+                HStack (spacing: screenWidth * 0.01) {
                     ButtonView(viewModel: viewModel, buttonText: "↑", foregroundButtonColor: arrowUpButtonColor, textButtonColor: numericButtonsTextColor)
                     
                     ButtonView(viewModel: viewModel, buttonText: "0", foregroundButtonColor: numericButtonsColor, textButtonColor: numericButtonsTextColor)
