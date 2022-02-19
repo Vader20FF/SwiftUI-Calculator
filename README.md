@@ -15,7 +15,7 @@ An iPhone calculator app recreated from the scratch in SwiftUI with MVVM archite
 
 ## Technologies
 * Swift 5 [SwiftUI]    
-* Xcode 13  
+* Xcode 12  
 
 
 ## Status
